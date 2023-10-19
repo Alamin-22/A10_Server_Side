@@ -29,6 +29,7 @@ async function run() {
     await client.connect();
 
     const carCollection = client.db("CarDB").collection("car")
+    const Add_CartCollection = client.db("CarDB").collection("Added_Cart");
 
     app.get("/car", async (req, res) => {
       const cursor = carCollection.find();
@@ -72,13 +73,37 @@ async function run() {
       res.send(result);
 
     })
+    // added_Cart
 
+    app.get("/added_cart", async (req, res) => {
+      const cursor = Add_CartCollection.find();
+      const Carts = await cursor.toArray();
+      res.send(Carts);
+    })
+
+    app.post("/added_cart", async (req, res) => {
+      const Added_Cart = req.body;
+      console.log(Added_Cart);
+      const result = await Add_CartCollection.insertOne(Added_Cart);
+      res.send(result);
+    })
+    // cart Delete
+    // app.delete(`/added_cart/:id`, async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await Add_CartCollection.deleteOne(query);
+    //   console.log(result);
+    //   res.send(result);
+    // })
+    // car delete
     app.delete(`/car/:id`, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await carCollection.deleteOne(query);
       res.send(result);
     })
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
