@@ -10,7 +10,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-
 const uri = `mongodb+srv://${process.env.MDB_USER}:${process.env.MDB_PASS}@cluster0.4hda1bm.mongodb.net/?retryWrites=true&w=majority`;
 
 
@@ -80,21 +79,29 @@ async function run() {
       const Carts = await cursor.toArray();
       res.send(Carts);
     })
-
-    app.post("/added_cart", async (req, res) => {
-      const Added_Cart = req.body;
-      console.log(Added_Cart);
-      const result = await Add_CartCollection.insertOne(Added_Cart);
+    // 
+    app.get(`/added_cart/:id`, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: id };
+      const result = await Add_CartCollection.findOne(query);
       res.send(result);
     })
-    // cart Delete
-    // app.delete(`/added_cart/:id`, async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await Add_CartCollection.deleteOne(query);
-    //   console.log(result);
+
+    // //
+    // app.post("/added_cart", async (req, res) => {
+    //   const Added_Cart = req.body;
+    //   console.log(Added_Cart);
+    //   const result = await Add_CartCollection.insertOne(Added_Cart);
     //   res.send(result);
     // })
+    // cart Delete
+    app.delete(`/added_cart/:id`, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: id };
+      const result = await Add_CartCollection.deleteOne(query);
+      res.send(result);
+
+    })
     // car delete
     app.delete(`/car/:id`, async (req, res) => {
       const id = req.params.id;
