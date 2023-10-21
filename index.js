@@ -87,13 +87,13 @@ async function run() {
       res.send(result);
     })
 
-    // //
-    // app.post("/added_cart", async (req, res) => {
-    //   const Added_Cart = req.body;
-    //   console.log(Added_Cart);
-    //   const result = await Add_CartCollection.insertOne(Added_Cart);
-    //   res.send(result);
-    // })
+    //
+    app.post("/added_cart", async (req, res) => {
+      const Added_Cart = req.body;
+      console.log(Added_Cart);
+      const result = await Add_CartCollection.insertOne(Added_Cart);
+      res.send(result);
+    })
     // cart Delete
     app.delete(`/added_cart/:id`, async (req, res) => {
       const id = req.params.id;
